@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bone Fracture Detection</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=5">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <script>
+        // SHOW LOADER
+        function showLoader() {
+            document.getElementById("loader").classList.remove("hidden");
+
+            const btn = document.getElementById("submitBtn");
+            btn.disabled = true;
+            btn.innerText = "Processing...";
+        }
+
+        // DARK MODE
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+        }
+
+        // IMAGE PREVIEW + FILE NAME + SUCCESS
+        function previewImage(event) {
+            const file = event.target.files[0];
+
+            const preview = document.getElementById("previewImage");
+            const previewBox = document.getElementById("previewBox");
+            const fileName = document.getElementById("fileName");
+            const successText = document.getElementById("successText");
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
+
+                previewBox.classList.remove("hidden");
+                fileName.innerText = file.name;
+                successText.classList.remove("hidden");
+            }
+        }
+
+        // REMOVE IMAGE
+        function removeImage() {
+            const input = document.getElementById("fileInput");
+            const previewBox = document.getElementById("previewBox");
+            const successText = document.getElementById("successText");
+
+            input.value = "";
+            previewBox.classList.add("hidden");
+            successText.classList.add("hidden");
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- Dark Mode -->
+    <button class="dark-toggle" onclick="toggleDarkMode()">Toggle Mode</button>
+
+    <div class="container">
+        <div class="card animate-card">
+
+            <h1>Bone Fracture Detection</h1>
+
+            <p class="subtitle">
+                Upload an X-ray image to detect Bone Fractures using CNN
+            </p>
+
+            <!-- FORM -->
+            <form action="/predict" method="post" enctype="multipart/form-data" onsubmit="showLoader()">
+
+                <!-- Upload -->
+                <div class="upload-box">
+                    <label class="upload-label">
+                        <span>Click to upload X-ray image</span>
+                        <input id="fileInput" type="file" name="file" accept="image/*">
+                    </label>
+                </div>
+
+                <!-- PREVIEW -->
+                <div id="previewBox" class="image-box hidden">
+                    <img id="previewImage" class="xray-img" src="" alt="Preview Image">
+
+                    <!-- FILE NAME -->
+                    <p id="fileName" class="file-name"></p>
+
+                    <!-- SUCCESS -->
+                    <p id="successText" class="success-text hidden">
+                        Image uploaded successfully
+                    </p>
+
+                    <!-- REMOVE BUTTON -->
+                    <button type="button" class="btn secondary" onclick="removeImage()">
+                        Remove Image
+                    </button>
+                </div>
+
+                <!-- LOADER -->
+                <div id="loader" class="loader hidden"></div>
+
+                <!-- BUTTON -->
+                <button type="submit" id="submitBtn" class="btn">
+                    Detect Fracture
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Result</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=4">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- 📊 Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // 🌙 Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- 🌙 Toggle -->
+    <button class="dark-toggle" onclick="toggleDarkMode()">🌙 Toggle Mode</button>
+
+    <div class="container">
+        <div class="card result-card">
+
+            <h1 class="result-title">🩺 Prediction Result</h1>
+
+            <!-- 🔥 IMAGE SECTION -->
+            <div class="image-section">
+
+                <!-- Original -->
+                <div class="image-box">
+                    <p>Original X-ray</p>
+                    <img src="{{ image_path }}" class="xray-img">
+                </div>
+
+                <!-- Grad-CAM -->
+                {% if gradcam_path %}
+                <div class="image-box heatmap-container">
+                    <p>Fracture Area Highlight</p>
+
+                    <!-- 🏷️ LABEL -->
+                    <span class="heatmap-label">Fracture Detected Area</span>
+
+                    <img src="{{ gradcam_path }}" class="xray-img heatmap">
+                </div>
+                {% endif %}
+
+            </div>
+
+            <!-- 🔥 RESULT -->
+            <h2 class="prediction-text 
+                {% if 'Fracture Detected' in result %}
+                    danger
+                {% else %}
+                    safe
+                {% endif %}
+            ">
+                {{ result }}
+            </h2>
+
+            <!-- 🔥 CONFIDENCE BAR -->
+            <div class="confidence-container">
+                <p>Confidence: <strong>{{ confidence }}%</strong></p>
+
+                <div class="progress-bar">
+                    <div class="progress-fill 
+                        {% if 'Fracture Detected' in result %}
+                            red
+                        {% else %}
+                            green
+                        {% endif %}
+                    " style="width: {{ confidence }}%;"></div>
+                </div>
+            </div>
+
+            <!-- 🔥 SEVERITY -->
+            {% if severity %}
+            <p class="severity-text">
+                Severity: <strong>{{ severity }}</strong>
+            </p>
+            {% endif %}
+
+            <!-- 🧾 DOCTOR RECOMMENDATION -->
+            {% if recommendation %}
+            <div class="report-box">
+                <h3>🧾 Doctor Recommendation</h3>
+                <p>{{ recommendation }}</p>
+            </div>
+            {% endif %}
+
+            <!-- 📊 ACCURACY CHART -->
+            <div class="chart-box">
+                <h3>📊 Model Performance</h3>
+                <canvas id="accuracyChart"></canvas>
+            </div>
+
+            <!-- 🔘 BUTTONS -->
+            <div class="button-group">
+
+                {% if pdf_report %}
+                <a href="{{ url_for('static', filename='uploads/' + pdf_report) }}" class="btn" target="_blank">
+                    Download Report
+                </a>
+                {% endif %}
+
+                <a href="/" class="btn secondary">
+                    Upload Another
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 📊 CHART SCRIPT -->
+    <script>
+        const ctx = document.getElementById('accuracyChart').getContext('2d');
+
+        const accuracyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ epochs | tojson }},
+                datasets: [
+                    {
+                        label: 'Training Accuracy',
+                        data: {{ accuracy | tojson }},
+                        borderWidth: 2,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Validation Accuracy',
+                        data: {{ val_accuracy | tojson }},
+                        borderWidth: 2,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
+
+</body>
+
+</html>

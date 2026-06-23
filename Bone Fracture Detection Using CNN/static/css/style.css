@@ -1,0 +1,618 @@
+/* =========================
+   GLOBAL RESET & VARIABLES
+========================= */
+:root {
+    --primary: #4f8cff;
+    --secondary: #89f7fe;
+    --text-dark: #2c2c2c;
+    --text-light: #666;
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --border-soft: rgba(255, 255, 255, 0.4);
+    --success: #2e7d32;
+    --danger: #c62828;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* =========================
+   BODY BACKGROUND
+========================= */
+body {
+    /* CHANGED: Using the 3D background image instead of linear gradient */
+    background: url('../images/bg-3d.png') no-repeat center center/cover;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* =========================
+   CARD (GLASSMORPHISM)
+========================= */
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 45px 40px;
+    width: 420px;
+    border-radius: 22px;
+    text-align: center;
+    border: 1px solid var(--border-soft);
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    animation: slideFade 0.7s ease-out;
+}
+
+/* =========================
+   TITLE & TEXT
+========================= */
+.card h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* =========================
+   UPLOAD BOX
+========================= */
+.upload-box {
+    margin-bottom: 20px;
+}
+
+.upload-label {
+    display: block;
+    padding: 18px;
+    border-radius: 14px;
+    border: 2px dashed var(--primary);
+    cursor: pointer;
+    color: var(--primary);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: rgba(79, 140, 255, 0.05);
+}
+
+.upload-label:hover {
+    background: rgba(79, 140, 255, 0.12);
+    transform: translateY(-1px);
+}
+
+/* =========================
+   BUTTON
+========================= */
+.btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 15px 0;
+    background: linear-gradient(135deg, var(--primary), #6fa8ff);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(79, 140, 255, 0.35);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 14px rgba(79, 140, 255, 0.3);
+}
+
+/* =========================
+   FOOTER TEXT
+========================= */
+.footer-text {
+    margin-top: 22px;
+    font-size: 0.75rem;
+    color: #888;
+    letter-spacing: 0.4px;
+}
+
+/* =========================
+   LOADER
+========================= */
+.loader {
+    margin: 15px auto;
+    width: 42px;
+    height: 42px;
+    border: 4px solid #e5e5e5;
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.hidden {
+    display: none;
+}
+
+/* =========================
+   RESULT PAGE
+========================= */
+.image-box {
+    margin: 25px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.image-box img {
+    width: 240px;
+    height: 240px;
+    object-fit: contain;
+    border-radius: 14px;
+    border: 2px solid var(--primary);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+    background-color: #fff; /* ✅ FIXED */
+    padding: 5px;
+}
+
+.prediction-text {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 15px;
+}
+
+.safe {
+    color: var(--success);
+}
+
+.danger {
+    color: var(--danger);
+}
+
+.confidence-text {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+@keyframes slideFade {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 480px) {
+    .card {
+        width: 100%;
+        padding: 35px 25px;
+    }
+
+    .card h1 {
+        font-size: 1.7rem;
+    }
+
+    .image-box img {
+        width: 200px;
+    }
+}
+
+/* =========================
+   TEAM MEMBERS (LEFT SIDE)
+========================= */
+.team-card {
+    position: fixed;
+    left: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--card-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 30px 25px;
+    width: 280px;
+    border-radius: 22px;
+    text-align: center;
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    animation: slideFade 0.7s ease-out;
+    z-index: 100;
+}
+
+.logo-container {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.college-logo {
+    width: 100px;
+    /* Adjust size as needed */
+    height: auto;
+    object-fit: contain;
+}
+
+.team-card h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.team-card h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.team-card h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: var(--secondary);
+    border-radius: 2px;
+}
+
+.team-list {
+    list-style: none;
+    padding: 0;
+}
+
+.team-list li {
+    font-size: 1rem;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 8px;
+}
+
+.team-list li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Responsive adjustments for Team Card */
+@media (max-width: 1200px) {
+
+    /* If screen is getting smaller, maybe reduce size or move it */
+    .team-card {
+        left: 20px;
+        width: 240px;
+    }
+}
+
+@media (max-width: 900px) {
+    /* On tablets/smaller screens, move it from fixed side to normal flow or top/bottom */
+
+    body {
+        flex-direction: column;
+        /* Allow stacking */
+        padding: 40px 20px;
+        justify-content: flex-start;
+        /* Start from top so they stack naturally */
+        height: auto;
+        /* Allow scrolling */
+    }
+
+    .container {
+        width: 100%;
+        padding: 0;
+        margin-top: 20px;
+        justify-content: center;
+    }
+
+    .team-card {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        width: 100%;
+        max-width: 420px;
+        /* Match main card max width */
+        margin-bottom: 20px;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Slightly adjust main card to ensure it looks good stacked */
+    .card {
+        margin-bottom: 20px;
+    }
+}
+
+/* =========================
+   DARK MODE 🌙
+========================= */
+.dark-mode {
+    background: #0f172a;
+}
+
+.dark-mode .card {
+    background: rgba(20, 20, 30, 0.85);
+    color: #fff;
+}
+
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode p {
+    color: #e5e7eb;
+}
+
+.dark-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: none;
+    background: #111827;
+    color: #fff;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+/* =========================
+   PROGRESS BAR 📊
+========================= */
+.confidence-container {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 10px;
+    transition: width 1s ease-in-out;
+}
+
+/* Colors */
+.progress-fill.green {
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+.progress-fill.red {
+    background: linear-gradient(90deg, #ef4444, #b91c1c);
+}
+
+/* =========================
+   IMAGE SECTION 🔥
+========================= */
+.image-section {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.image-box p {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.heatmap {
+    border: 2px solid red !important;
+}
+
+/* =========================
+   BUTTON GROUP
+========================= */
+.button-group {
+    margin-top: 20px;
+}
+
+.btn.secondary {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    margin-top: 10px;
+}
+
+.btn.secondary:hover {
+    box-shadow: 0 10px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* =========================
+   SMOOTH UI ✨
+========================= */
+body, .card {
+    transition: all 0.3s ease;
+}
+
+/* =========================
+   🧾 DOCTOR REPORT BOX
+========================= */
+.report-box {
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 14px;
+    background: rgba(79, 140, 255, 0.08);
+    border-left: 5px solid var(--primary);
+    text-align: left;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.report-box h3 {
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.report-box p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* =========================
+   📊 CHART BOX
+========================= */
+.chart-box {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 14px;
+    background: rgba(0,0,0,0.04);
+}
+
+.chart-box canvas {
+    margin-top: 10px;
+}
+
+/* =========================
+   🏷️ HEATMAP LABEL
+========================= */
+.heatmap-container {
+    position: relative;
+}
+
+.heatmap-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(255, 0, 0, 0.85);
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    border-radius: 8px;
+    font-weight: 500;
+    z-index: 10;
+}
+
+/* =========================
+   🌙 DARK MODE ENHANCEMENTS
+========================= */
+.dark-mode .report-box {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 5px solid #60a5fa;
+}
+
+.dark-mode .chart-box {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .progress-bar {
+    background: rgba(255,255,255,0.1);
+}
+
+.dark-mode .heatmap-label {
+    background: rgba(255, 50, 50, 0.9);
+}
+
+/* =========================
+   ✨ HOVER IMPROVEMENTS
+========================= */
+.image-box img:hover {
+    transform: scale(1.03);
+    transition: 0.3s ease;
+}
+
+.btn.secondary:hover {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* Preview Section */
+/* Preview Container */
+#previewBox {
+    margin-top: 15px;
+    text-align: center;
+}
+
+/* Image Styling FIX */
+#previewImage {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;   /* 🔥 keeps image proper */
+    border-radius: 12px;
+    border: 2px solid var(--primary);
+    margin-bottom: 10px;
+    background-color: #fff; /* 🔥 REMOVE BLACK BG */
+    padding: 5px;
+}
+
+/* File Name */
+.file-name {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    margin-bottom: 5px;
+}
+
+/* Success Text */
+.success-text {
+    color: #16a34a;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+/* Dark Mode Fix */
+.dark-mode .file-name {
+    color: #e5e7eb;
+}
+
+/* 🔥 FIX PREVIEW VISIBILITY */
+#previewBox {
+    display: none;
+}
+
+#previewBox:not(.hidden) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
